@@ -6,6 +6,8 @@ An isometric city builder in JavaScript
 
 [Live version](https://victorribeiro.com/isocity)
 
+[Alternative link - with the pull requests](https://victorqribeiro.github.io/isocity/)
+
 ## About
 
 A simple JavaScript city builder with no simulation at all. No budget, no goals. Just build your tiny city. This would work on a phone, but it wasn't designed with phones in mind.
