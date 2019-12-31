@@ -44,15 +44,9 @@ const init = function(){
 	cf.translate(w/2,tileHeight*2)
 	fg.addEventListener('mousemove', viz )
 	fg.addEventListener('contextmenu', e => { e.preventDefault() } )
-	fg.addEventListener('mouseup', e => {
-		const pos = getPosition(e)
-		if( pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles){
-			map[pos.x][pos.y][0] = (e.which === 3) ? 0 : tool[0]
-			map[pos.x][pos.y][1] = (e.which === 3) ? 0 : tool[1]
-			drawMap()
-			cf.clearRect(-w,-h,w*2,h*2)
-		}
-	})
+	fg.addEventListener('mouseup', click)
+	fg.addEventListener('touchend', click)
+	fg.addEventListener('pointerup', click)
 
 	tools = $('#tools')
 
@@ -66,6 +60,16 @@ const init = function(){
 		}
 	}
 
+}
+
+const click = e => {
+	const pos = getPosition(e)
+	if (pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles) {
+		map[pos.x][pos.y][0] = (e.which === 3) ? 0 : tool[0]
+		map[pos.x][pos.y][1] = (e.which === 3) ? 0 : tool[1]
+		drawMap()
+		cf.clearRect(-w, -h, w * 2, h * 2)
+	}
 }
 
 const drawMap = function(){
