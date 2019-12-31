@@ -3,7 +3,7 @@ const $ = _ => document.querySelector(_)
 
 const $c = _ => document.createElement(_)
 
-let canvas, bg, fg, cf, ntiles, tileWidth, tileHeight, map, tools, tool
+let canvas, bg, fg, cf, ntiles, tileWidth, tileHeight, map, tools, tool, activeTool
 
 /* texture from https://opengameart.org/content/isometric-landscape */
 const texture = new Image()
@@ -50,12 +50,21 @@ const init = function(){
 
 	tools = $('#tools')
 
+	let toolCount = 0
 	for(let i = 0; i < 6; i++){
 		for(let j = 0; j < 12; j++){
 			const div = $c('div');
+			div.id = 'tool_' + toolCount++
 			div.style.display = "block"
 			div.style.backgroundPosition = `-${j*130}px -${i*230}px`
-			div.addEventListener('click', _ => { tool = [i,j] } )
+			div.addEventListener('click', e => {
+				tool = [i,j]
+				if (activeTool) {
+					document.getElementById(activeTool).classList.remove('selected')
+				}
+				activeTool = e.target.id
+				document.getElementById(activeTool).classList.add('selected')
+			})
 			tools.appendChild( div )
 		}
 	}
