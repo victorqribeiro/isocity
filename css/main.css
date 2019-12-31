@@ -43,6 +43,10 @@ canvas {
 	height: 230px;
 }
 
+#tools > div.selected {
+	border: 2px dashed #b05355;
+}
+
 @media only screen and (max-width: 640px) {
 
 	#main {
