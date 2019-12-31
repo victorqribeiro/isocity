@@ -43,28 +43,29 @@ const init = function(){
 	cf = fg.getContext('2d')
 	cf.translate(w/2,tileHeight*2)
 	fg.addEventListener('mousemove', viz )
-	fg.addEventListener('click', e => {
+	fg.addEventListener('contextmenu', e => { e.preventDefault() } )
+	fg.addEventListener('mouseup', e => {
 		const pos = getPosition(e)
 		if( pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles){
-			map[pos.x][pos.y][0] = tool[0]
-			map[pos.x][pos.y][1] = tool[1]
+			map[pos.x][pos.y][0] = (e.which === 3) ? 0 : tool[0]
+			map[pos.x][pos.y][1] = (e.which === 3) ? 0 : tool[1]
 			drawMap()
 			cf.clearRect(-w,-h,w*2,h*2)
 		}
 	})
-	
+
 	tools = $('#tools')
-	
+
 	for(let i = 0; i < 6; i++){
 		for(let j = 0; j < 12; j++){
 			const div = $c('div');
 			div.style.display = "block"
 			div.style.backgroundPosition = `-${j*130}px -${i*230}px`
-			div.addEventListener('click', _ => { tool = [i,j] } )	
+			div.addEventListener('click', _ => { tool = [i,j] } )
 			tools.appendChild( div )
 		}
 	}
-	
+
 }
 
 const drawMap = function(){
@@ -101,7 +102,7 @@ const drawImageTile = function(c,x,y,i,j){
 
 const getPosition = e => {
 	let x = e.offsetX, y = e.offsetY - tileHeight*2;
-	
+
   const _y = ( y / ( (ntiles * tileHeight) / ntiles ) )
   const _x = ( (x-tileWidth/2) / ( (ntiles * tileWidth) / ntiles ) )-ntiles/2
   x = Math.round(_y-_x-1)
