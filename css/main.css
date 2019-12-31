@@ -1,0 +1,68 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#main {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+#area {
+	position: relative;
+	width: 910px;
+	height: 666px;
+}
+
+#tools {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: wrap;
+	overflow: auto;
+	width: 150px;
+	max-height: 600px;
+}
+
+#tools > div {
+	display: block;
+	background-image: url('../textures/01_130x66_130x230.png');
+	background-repeat: no-repeat;
+	width: 130px;
+	height: 230px;
+}
+
+@media only screen and (max-width: 640px) {
+
+	#main {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	
+	#tools {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		overflow: auto;
+		width: 910px;
+		height: 230px;
+	}
+	
+	#area {
+		position: relative;
+		max-width: 100vw;
+	}
+	
+}
