@@ -16,6 +16,7 @@ canvas {
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
+	height: 100%;
 }
 
 #area {
@@ -31,7 +32,7 @@ canvas {
 	flex-wrap: wrap;
 	overflow: auto;
 	width: 150px;
-	max-height: 600px;
+	height: 100%;
 }
 
 #tools > div {
