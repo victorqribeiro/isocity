@@ -8,7 +8,7 @@ An isometric city builder in JavaScript
 
 ## About
 
-A simple JavaScript city builder with no simulation at all. No budget, no goals. Just build yout tiny city. This would work on a phone, but it wasn't design with phones in mind.
+A simple JavaScript city builder with no simulation at all. No budget, no goals. Just build your tiny city. This would work on a phone, but it wasn't design with phones in mind.
 
 ## Credits
 
