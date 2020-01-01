@@ -3,12 +3,14 @@ const $ = _ => document.querySelector(_)
 
 const $c = _ => document.createElement(_)
 
-let canvas, bg, fg, cf, ntiles, tileWidth, tileHeight, map, tools, tool, activeTool
+let canvas, bg, fg, cf, ntiles, tileWidth, tileHeight, map, tools, tool, activeTool, isPlacing
 
 /* texture from https://opengameart.org/content/isometric-landscape */
 const texture = new Image()
 texture.src = "textures/01_130x66_130x230.png"
 texture.onload = _ => init()
+
+
 
 const init = function(){
 
@@ -42,9 +44,10 @@ const init = function(){
 	fg.height = canvas.height
 	cf = fg.getContext('2d')
 	cf.translate(w/2,tileHeight*2)
-	fg.addEventListener('mousemove', viz )
+	fg.addEventListener('mousemove', viz)
 	fg.addEventListener('contextmenu', e => { e.preventDefault() } )
-	fg.addEventListener('mouseup', click)
+	fg.addEventListener('mouseup', unclick)
+	fg.addEventListener('mousedown', click)
 	fg.addEventListener('touchend', click)
 	fg.addEventListener('pointerup', click)
 
@@ -74,10 +77,19 @@ const init = function(){
 const click = e => {
 	const pos = getPosition(e)
 	if (pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles) {
+		
 		map[pos.x][pos.y][0] = (e.which === 3) ? 0 : tool[0]
 		map[pos.x][pos.y][1] = (e.which === 3) ? 0 : tool[1]
+		isPlacing = true
+
 		drawMap()
 		cf.clearRect(-w, -h, w * 2, h * 2)
+	}
+}
+
+const unclick = e => {
+	if (isPlacing == true) {
+		isPlacing = false
 	}
 }
 
@@ -125,9 +137,14 @@ const getPosition = e => {
 
 const viz = function(e){
 
+	if (isPlacing) {
+		click(e)
+	}
 	const pos = getPosition(e)
 
   cf.clearRect(-w,-h,w*2,h*2)
   if( pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles)
-    drawTile(cf,pos.x,pos.y,'rgba(0,0,0,0.2)')
+	drawTile(cf,pos.x,pos.y,'rgba(0,0,0,0.2)')
+
+
 }
