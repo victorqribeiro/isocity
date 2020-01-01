@@ -6,7 +6,7 @@ An isometric city builder in JavaScript
 
 [Live version](https://victorribeiro.com/isocity)
 
-[Alternative link - with the pull requests](https://victorqribeiro.github.io/isocity/)
+[Alternative link](https://victorqribeiro.github.io/isocity/)
 
 ## About
 
