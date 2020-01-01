@@ -7,8 +7,6 @@ html, body {
 canvas {
   display: block;
   position: absolute;
-  top: 0;
-  left: 0;
 }
 
 #main {
@@ -21,8 +19,13 @@ canvas {
 
 #area {
 	position: relative;
-	width: 910px;
-	height: 666px;
+	width: 100%;
+	height: 100%;
+	flex: 1;
+	display: flex;
+	justify-content: space-around;
+	overflow: scroll;
+
 }
 
 #tools {
@@ -31,8 +34,25 @@ canvas {
 	align-items: center;
 	flex-wrap: wrap;
 	overflow: auto;
-	width: 150px;
+	width: 580px;
 	height: 100%;
+	transition: width .8s;
+}
+@media only screen and (max-width: 1700px) {
+	#tools {
+		width: 440px;
+	}
+}
+
+@media only screen and (max-width: 1540px) {
+	#tools {
+		width: 300px;
+	}
+}
+@media only screen and (max-width: 1380px) {
+	#tools {
+		width: 160px;
+	}
 }
 
 #tools > div {
@@ -41,13 +61,14 @@ canvas {
 	background-repeat: no-repeat;
 	width: 130px;
 	height: 230px;
+	margin: 5px;
 }
 
 #tools > div.selected {
 	border: 2px dashed #b05355;
 }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 966px) {
 
 	#main {
 		position: relative;
@@ -58,15 +79,13 @@ canvas {
 	
 	#tools {
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		overflow: auto;
-		width: 910px;
+		width: 100%;
+		height: 240px;
 	}
-	
 	#area {
-		position: relative;
-		max-width: 100vw;
+		justify-content: flex-start;
 	}
 	
 }
