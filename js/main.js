@@ -26,7 +26,7 @@ const init = function(){
 		[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
 	]
 
-	canvas = document.getElementById("bg")
+	canvas = $("#bg")
 	canvas.width = 910
 	canvas.height = 666
 	w = 910
@@ -43,7 +43,7 @@ const init = function(){
 
 	drawMap()
 
-	fg = document.getElementById('fg')
+	fg = $('#fg')
 	fg.width = canvas.width
 	fg.height = canvas.height
 	cf = fg.getContext('2d')
@@ -66,9 +66,8 @@ const init = function(){
 			div.style.backgroundPosition = `-${j*130}px -${i*230}px`
 			div.addEventListener('click', e => {
 				tool = [i,j]
-				if (activeTool) {
+				if (activeTool)
 					document.getElementById(activeTool).classList.remove('selected')
-				}
 				activeTool = e.target.id
 				document.getElementById(activeTool).classList.add('selected')
 			})
@@ -114,7 +113,6 @@ function updateHashState() {
 
 function loadHashState(state) {
 	let u8 = FromBase64(state)
-	console.log(u8)
 	let c = 0
 	for(let i = 0; i < ntiles; i++) {
 		for(let j = 0; j < ntiles; j++) {
@@ -127,9 +125,8 @@ function loadHashState(state) {
 }
 
 const unclick = e => {
-	if (isPlacing == true) {
+	if (isPlacing)
 		isPlacing = false
-	}
 }
 
 const drawMap = function(){
@@ -166,7 +163,6 @@ const drawImageTile = function(c,x,y,i,j){
 
 const getPosition = e => {
 	let x = e.offsetX, y = e.offsetY - tileHeight*2;
-
   const _y = ( y / ( (ntiles * tileHeight) / ntiles ) )
   const _x = ( (x-tileWidth/2) / ( (ntiles * tileWidth) / ntiles ) )-ntiles/2
   x = Math.round(_y-_x-1)
@@ -175,15 +171,10 @@ const getPosition = e => {
 }
 
 const viz = function(e){
-
-	if (isPlacing) {
+	if (isPlacing)
 		click(e)
-	}
 	const pos = getPosition(e)
-
   cf.clearRect(-w,-h,w*2,h*2)
   if( pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles)
-	drawTile(cf,pos.x,pos.y,'rgba(0,0,0,0.2)')
-
-
+		drawTile(cf,pos.x,pos.y,'rgba(0,0,0,0.2)')
 }
