@@ -29,11 +29,15 @@ const init = function(){
 	canvas.height = 666
 	w = 910
 	h = 462
+	texWidth = 12
+	texHeight = 6
 	bg = canvas.getContext("2d")
 	ntiles = 7
 	tileWidth = 128
 	tileHeight = 64
 	bg.translate(w/2,tileHeight*2)
+
+	loadHashState(document.location.hash.substring(1))
 
 	drawMap()
 
@@ -51,8 +55,8 @@ const init = function(){
 	tools = $('#tools')
 
 	let toolCount = 0
-	for(let i = 0; i < 6; i++){
-		for(let j = 0; j < 12; j++){
+	for(let i = 0; i < texHeight; i++){
+		for(let j = 0; j < texWidth; j++){
 			const div = $c('div');
 			div.id = 'tool_' + toolCount++
 			div.style.display = "block"
@@ -78,6 +82,41 @@ const click = e => {
 		map[pos.x][pos.y][1] = (e.which === 3) ? 0 : tool[1]
 		drawMap()
 		cf.clearRect(-w, -h, w * 2, h * 2)
+	}
+	updateHashState();
+}
+
+// From https://stackoverflow.com/a/36046727
+ToBase64 = function (u8) {
+	return btoa(String.fromCharCode.apply(null, u8));
+}
+FromBase64 = function (str) {
+	return atob(str).split('').map(function (c) { return c.charCodeAt(0); });
+}
+
+function updateHashState() {
+	let c = 0
+	const u8 = new Uint8Array(ntiles*ntiles);
+	for(let i = 0; i < ntiles; i++){
+		for(let j = 0; j < ntiles; j++){
+			u8[c++] = map[i][j][0]*texWidth + map[i][j][1]
+		}
+	}
+	const state = ToBase64(u8);
+	history.replaceState(undefined, undefined, "#"+state)
+}
+
+function loadHashState(state) {
+	let u8 = FromBase64(state)
+	console.log(u8)
+	let c = 0
+	for(let i = 0; i < ntiles; i++) {
+		for(let j = 0; j < ntiles; j++) {
+			const t = u8[c++] || 0
+			const x = Math.trunc(t / texWidth)
+			const y = Math.trunc(t % texWidth)
+			map[i][j] = [x,y]
+		}
 	}
 }
 
