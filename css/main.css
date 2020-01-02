@@ -62,10 +62,11 @@ canvas {
 	width: 130px;
 	height: 230px;
 	margin: 5px;
+	border: 2px dashed transparent;
 }
 
 #tools > div.selected {
-	border: 2px dashed #b05355;
+	border-color: #b05355;
 }
 
 @media only screen and (max-width: 966px) {
