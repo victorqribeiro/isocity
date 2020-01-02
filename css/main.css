@@ -24,14 +24,14 @@ canvas {
 	flex: 1;
 	display: flex;
 	justify-content: space-around;
-	overflow: scroll;
-
+	overflow: auto;
 }
 
 #tools {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	justify-content: center;
 	flex-wrap: wrap;
 	overflow: auto;
 	width: 580px;
@@ -59,10 +59,11 @@ canvas {
 	display: block;
 	background-image: url('../textures/01_130x66_130x230.png');
 	background-repeat: no-repeat;
+	background-size: auto;
 	width: 130px;
 	height: 230px;
-	margin: 5px;
 	border: 2px dashed transparent;
+	box-sizing: border-box;
 }
 
 #tools > div.selected {
