@@ -63,7 +63,8 @@ const init = function(){
 			const div = $c('div');
 			div.id = 'tool_' + toolCount++
 			div.style.display = "block"
-			div.style.backgroundPosition = `-${j*130}px -${i*230}px`
+			/* width of 132 instead of 130  = 130 image + 2 border = 132 */
+			div.style.backgroundPosition = `-${j*130+2}px -${i*230}px`
 			div.addEventListener('click', e => {
 				tool = [i,j]
 				if (activeTool)
