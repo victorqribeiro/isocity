@@ -164,10 +164,10 @@ const drawImageTile = function(c,x,y,i,j){
 
 const getPosition = e => {
 	let x = e.offsetX, y = e.offsetY - tileHeight*2;
-  const _y = ( y / ( (ntiles * tileHeight) / ntiles ) )
-  const _x = ( (x-tileWidth/2) / ( (ntiles * tileWidth) / ntiles ) )-ntiles/2
-  x = Math.round(_y-_x-1)
-  y = Math.round(_x+_y)
+  const _y =  y / tileHeight
+  const _x =  x / tileWidth - ntiles/2
+  x = Math.floor(_y-_x)
+  y = Math.floor(_x+_y)
   return {x,y}
 }
 
