@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "cdfuller",
+      "name": "Cody Fuller",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2310581?v=4",
+      "profile": "https://github.com/cdfuller",
+      "contributions": [
+        "design"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "isocity",
+  "projectOwner": "victorqribeiro",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
