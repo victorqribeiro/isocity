@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "travbrack",
+      "name": "Travis Brackett",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/202011?v=4",
+      "profile": "https://github.com/travbrack",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "isocity",
+  "projectOwner": "victorqribeiro",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
