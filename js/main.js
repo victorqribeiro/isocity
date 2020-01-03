@@ -10,8 +10,6 @@ const texture = new Image()
 texture.src = "textures/01_130x66_130x230.png"
 texture.onload = _ => init()
 
-
-
 const init = function(){
 
 	tool = [0,0]
@@ -61,21 +59,55 @@ const init = function(){
 	for(let i = 0; i < texHeight; i++){
 		for(let j = 0; j < texWidth; j++){
 			const div = $c('div');
-			div.id = 'tool_' + toolCount++
+			div.id = `tool_${toolCount++}`
 			div.style.display = "block"
 			/* width of 132 instead of 130  = 130 image + 2 border = 132 */
 			div.style.backgroundPosition = `-${j*130+2}px -${i*230}px`
 			div.addEventListener('click', e => {
 				tool = [i,j]
 				if (activeTool)
-					document.getElementById(activeTool).classList.remove('selected')
+					$(`#${activeTool}`).classList.remove('selected')
 				activeTool = e.target.id
-				document.getElementById(activeTool).classList.add('selected')
+				$(`#${activeTool}`).classList.add('selected')
 			})
 			tools.appendChild( div )
 		}
 	}
 
+}
+
+// From https://stackoverflow.com/a/36046727
+const ToBase64 = function(u8){
+	return btoa(String.fromCharCode.apply(null, u8))
+}
+
+const FromBase64 = function(str){
+	return atob(str).split('').map( c => c.charCodeAt(0) )
+}
+
+function updateHashState() {
+	let c = 0
+	const u8 = new Uint8Array(ntiles*ntiles)
+	for(let i = 0; i < ntiles; i++){
+		for(let j = 0; j < ntiles; j++){
+			u8[c++] = map[i][j][0]*texWidth + map[i][j][1]
+		}
+	}
+	const state = ToBase64(u8)
+	history.replaceState(undefined, undefined, `#${state}`)
+}
+
+function loadHashState(state) {
+	let u8 = FromBase64(state)
+	let c = 0
+	for(let i = 0; i < ntiles; i++) {
+		for(let j = 0; j < ntiles; j++) {
+			const t = u8[c++] || 0
+			const x = Math.trunc(t / texWidth)
+			const y = Math.trunc(t % texWidth)
+			map[i][j] = [x,y]
+		}
+	}
 }
 
 const click = e => {
@@ -90,39 +122,6 @@ const click = e => {
 		cf.clearRect(-w, -h, w * 2, h * 2)
 	}
 	updateHashState();
-}
-
-// From https://stackoverflow.com/a/36046727
-ToBase64 = function (u8) {
-	return btoa(String.fromCharCode.apply(null, u8));
-}
-FromBase64 = function (str) {
-	return atob(str).split('').map(function (c) { return c.charCodeAt(0); });
-}
-
-function updateHashState() {
-	let c = 0
-	const u8 = new Uint8Array(ntiles*ntiles);
-	for(let i = 0; i < ntiles; i++){
-		for(let j = 0; j < ntiles; j++){
-			u8[c++] = map[i][j][0]*texWidth + map[i][j][1]
-		}
-	}
-	const state = ToBase64(u8);
-	history.replaceState(undefined, undefined, "#"+state)
-}
-
-function loadHashState(state) {
-	let u8 = FromBase64(state)
-	let c = 0
-	for(let i = 0; i < ntiles; i++) {
-		for(let j = 0; j < ntiles; j++) {
-			const t = u8[c++] || 0
-			const x = Math.trunc(t / texWidth)
-			const y = Math.trunc(t % texWidth)
-			map[i][j] = [x,y]
-		}
-	}
 }
 
 const unclick = e => {
@@ -141,41 +140,40 @@ const drawMap = function(){
 
 const drawTile = function(c,x,y,color){
 	c.save()
-  c.translate((y-x) * tileWidth/2,(x+y)*tileHeight/2)
-  c.beginPath()
-  c.moveTo(0,0)
-  c.lineTo(tileWidth/2,tileHeight/2)
-  c.lineTo(0,tileHeight)
-  c.lineTo(-tileWidth/2,tileHeight/2)
-  c.closePath()
-  c.fillStyle = color
-  c.fill()
-  c.restore()
+	c.translate((y-x) * tileWidth/2,(x+y)*tileHeight/2)
+	c.beginPath()
+	c.moveTo(0,0)
+	c.lineTo(tileWidth/2,tileHeight/2)
+	c.lineTo(0,tileHeight)
+	c.lineTo(-tileWidth/2,tileHeight/2)
+	c.closePath()
+	c.fillStyle = color
+	c.fill()
+	c.restore()
 }
 
 const drawImageTile = function(c,x,y,i,j){
 	c.save()
-  c.translate((y-x) * tileWidth/2,(x+y)*tileHeight/2)
-  j *= 130
-  i *= 230
+	c.translate((y-x) * tileWidth/2,(x+y)*tileHeight/2)
+	j *= 130
+	i *= 230
 	c.drawImage(texture,j,i,130,230,-65,-130,130,230)
 	c.restore()
 }
 
 const getPosition = e => {
-	let x = e.offsetX, y = e.offsetY - tileHeight*2;
-  const _y =  y / tileHeight
-  const _x =  x / tileWidth - ntiles/2
-  x = Math.floor(_y-_x)
-  y = Math.floor(_x+_y)
-  return {x,y}
+	const _y =  (e.offsetY - tileHeight * 2) / tileHeight,
+				_x =  e.offsetX / tileWidth - ntiles / 2
+	x = Math.floor(_y-_x)
+	y = Math.floor(_x+_y)
+	return {x,y}
 }
 
 const viz = function(e){
 	if (isPlacing)
 		click(e)
 	const pos = getPosition(e)
-  cf.clearRect(-w,-h,w*2,h*2)
-  if( pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles)
+	cf.clearRect(-w,-h,w*2,h*2)
+	if( pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles)
 		drawTile(cf,pos.x,pos.y,'rgba(0,0,0,0.2)')
 }
