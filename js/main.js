@@ -10,7 +10,7 @@ const texture = new Image()
 texture.src = "textures/01_130x66_130x230.png"
 texture.onload = _ => init()
 
-const init = function(){
+const init = () => {
 
 	tool = [0,0]
 
@@ -47,7 +47,7 @@ const init = function(){
 	cf = fg.getContext('2d')
 	cf.translate(w/2,tileHeight*2)
 	fg.addEventListener('mousemove', viz)
-	fg.addEventListener('contextmenu', e => { e.preventDefault() } )
+	fg.addEventListener('contextmenu', e => e.preventDefault())
 	fg.addEventListener('mouseup', unclick)
 	fg.addEventListener('mousedown', click)
 	fg.addEventListener('touchend', click)
@@ -77,15 +77,15 @@ const init = function(){
 }
 
 // From https://stackoverflow.com/a/36046727
-const ToBase64 = function(u8){
+const ToBase64 = u8 => {
 	return btoa(String.fromCharCode.apply(null, u8))
 }
 
-const FromBase64 = function(str){
+const FromBase64 = str => {
 	return atob(str).split('').map( c => c.charCodeAt(0) )
 }
 
-function updateHashState() {
+const updateHashState = () => {
 	let c = 0
 	const u8 = new Uint8Array(ntiles*ntiles)
 	for(let i = 0; i < ntiles; i++){
@@ -97,8 +97,8 @@ function updateHashState() {
 	history.replaceState(undefined, undefined, `#${state}`)
 }
 
-function loadHashState(state) {
-	let u8 = FromBase64(state)
+const loadHashState = state => {
+	const u8 = FromBase64(state)
 	let c = 0
 	for(let i = 0; i < ntiles; i++) {
 		for(let j = 0; j < ntiles; j++) {
@@ -124,12 +124,12 @@ const click = e => {
 	updateHashState();
 }
 
-const unclick = e => {
+const unclick = () => {
 	if (isPlacing)
 		isPlacing = false
 }
 
-const drawMap = function(){
+const drawMap = () =>{
 	bg.clearRect(-w,-h,w*2,h*2)
 	for(let i = 0; i < ntiles; i++){
 		for(let j = 0; j < ntiles; j++){
@@ -138,7 +138,7 @@ const drawMap = function(){
 	}
 }
 
-const drawTile = function(c,x,y,color){
+const drawTile = (c,x,y,color) => {
 	c.save()
 	c.translate((y-x) * tileWidth/2,(x+y)*tileHeight/2)
 	c.beginPath()
@@ -152,7 +152,7 @@ const drawTile = function(c,x,y,color){
 	c.restore()
 }
 
-const drawImageTile = function(c,x,y,i,j){
+const drawImageTile = (c,x,y,i,j) => {
 	c.save()
 	c.translate((y-x) * tileWidth/2,(x+y)*tileHeight/2)
 	j *= 130
@@ -169,7 +169,7 @@ const getPosition = e => {
 	return {x,y}
 }
 
-const viz = function(e){
+const viz = (e) =>{
 	if (isPlacing)
 		click(e)
 	const pos = getPosition(e)
