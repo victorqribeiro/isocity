@@ -3,7 +3,8 @@ const $ = _ => document.querySelector(_)
 
 const $c = _ => document.createElement(_)
 
-let canvas, bg, fg, cf, ntiles, tileWidth, tileHeight, map, tools, tool, activeTool, isPlacing
+let canvas, bg, fg, cf, ntiles, tileWidth, tileHeight, texWidth,
+	texHeight, map, tools, tool, activeTool, isPlacing, previousState
 
 /* texture from https://opengameart.org/content/isometric-landscape */
 const texture = new Image()
@@ -38,7 +39,6 @@ const init = () => {
 	bg.translate(w / 2, tileHeight * 2)
 
 	loadHashState(document.location.hash.substring(1))
-
 	drawMap()
 
 	fg = $('#fg')
@@ -94,8 +94,16 @@ const updateHashState = () => {
 		}
 	}
 	const state = ToBase64(u8)
-	history.replaceState(undefined, undefined, `#${state}`)
+	if (!previousState || previousState != state) {
+		history.pushState(undefined, undefined, `#${state}`)
+		previousState = state
+	}
 }
+
+window.addEventListener('popstate', function () {
+	loadHashState(document.location.hash.substring(1))
+	drawMap()
+})
 
 const loadHashState = state => {
 	const u8 = FromBase64(state)
@@ -113,11 +121,9 @@ const loadHashState = state => {
 const click = e => {
 	const pos = getPosition(e)
 	if (pos.x >= 0 && pos.x < ntiles && pos.y >= 0 && pos.y < ntiles) {
-
 		map[pos.x][pos.y][0] = (e.which === 3) ? 0 : tool[0]
 		map[pos.x][pos.y][1] = (e.which === 3) ? 0 : tool[1]
 		isPlacing = true
-
 		drawMap()
 		cf.clearRect(-w, -h, w * 2, h * 2)
 	}
@@ -162,8 +168,8 @@ const drawImageTile = (c, x, y, i, j) => {
 }
 
 const getPosition = e => {
-	const _y = (e.offsetY - tileHeight * 2) / tileHeight,
-		_x = e.offsetX / tileWidth - ntiles / 2
+	const _y = (e.offsetY - tileHeight * 2) / tileHeight
+	const _x = e.offsetX / tileWidth - ntiles / 2
 	x = Math.floor(_y - _x)
 	y = Math.floor(_x + _y)
 	return { x, y }
